@@ -6,17 +6,19 @@ using UnityEngine.UI;
 
 public class TransEffect : MonoBehaviour
 {
-
+    public Transform lib;
     public List<GoInfo> GoList;
     public float varifySpeed = 0.5f;
     public float aTime = 5f;//每个物体保持出现的时间
-    public float dTime = 5f;
+    public float dTime = 5f;//第一张图片第一轮循环时出现时间
 
     private float minAlpha = 0.0f;
     private float maxAlpha = .9f;
     private float curAlpha = 1.0f;
     private float nextAlpha = 0.0f;
     private int i = 0;
+
+
 
     public void OnEnable()
     {
@@ -47,14 +49,16 @@ public class TransEffect : MonoBehaviour
     {
         //添加图片列表
         GoList = new List<GoInfo>();
-        GoList.Add(new GoInfo("img01", transform.Find("img01").GetComponent<Image>()));
-        GoList.Add(new GoInfo("img02", transform.Find("img02").GetComponent<Image>()));
-        GoList.Add(new GoInfo("img03", transform.Find("img03").GetComponent<Image>()));
-        GoList.Add(new GoInfo("img04", transform.Find("img04").GetComponent<Image>()));
+        for (int i = 0; i < lib.childCount; i++) {
+            GoList.Add(new GoInfo(lib.GetChild(i).name.ToString(),lib.transform.GetChild(i).GetComponent<Image>()));
+        }
+        Debug.Log(GoList.Count);
     }
 
 private void Trans()
     {
+
+        Debug.Log(i);
         GoInfo go;
         GoInfo nextgo;
 
