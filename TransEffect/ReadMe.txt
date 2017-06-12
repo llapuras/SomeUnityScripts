@@ -1,10 +1,10 @@
-TransEffect_02.cs Ê¹ÓÃËµÃ÷
+TransEffect_02.cs 
 
-¹¦ÄÜ£ºImageÍ¸Ã÷¶È½¥±äÑ­»·ÏÔÊ¾
+Gradient Transparent scripts for UI Image.
 
-¿Éµ÷²ÎÊı£º
+Variables:
 
-Go List ¡ª¡ª Í¼Æ¬ÁĞ±í£¬²»ÓÃÀíËü£¬ÔËĞĞÊ±»áÏÔÊ¾ÁĞ±íĞÅÏ¢
-A Time  ¡ª¡ª Ã¿ÕÅÍ¼Æ¬ÔÚ²»Í¸Ã÷×´Ì¬ÏÂÏÔÊ¾Ê±³¤
-D Time  ¡ª¡ª µÚÒ»ÕÅÍ¼Æ¬µÚÒ»´ÎÑ­»·Ê±ÏÔÊ¾Ê±³¤
-Lib     ¡ª¡ª ½«¸Ã½Å±¾¸½¼ÓÖÁ´æ·ÅÁĞ±íÍ¼Æ¬µÄparentÎïÌå£¬²¢½«¸ÃÎïÌåÌí¼ÓÖÁ´ËÀ¸
+Go List â€”â€” Image List, display info of current list while excute the scene  
+A Time  â€”â€” Timescale of displaying a image while loop
+D Time  â€”â€” Timescale of displaying the first image 
+Lib Â  Â  â€”â€” Add images as child objects to a parent object. Attach the script to this parent object and add it to lib.
