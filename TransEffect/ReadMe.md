@@ -1,4 +1,5 @@
 TransEffect_02.cs 
+--------------
 
 Gradient Transparent scripts for UI Image.
 
