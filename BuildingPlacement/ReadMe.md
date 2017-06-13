@@ -1,4 +1,4 @@
-Building Placement(keep on updating~( ×ω× ))
+Building Placement
 ----------
 
 Simplely place building on the ground and check the collider between buildings.
