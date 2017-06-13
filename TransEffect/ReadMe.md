@@ -9,4 +9,4 @@ A Time  —— Timescale of displaying a image while loop
 D Time  —— Timescale of displaying the first image 
 Lib     —— Add images as child objects to a parent object. Attach the script to this parent object and add it to lib.
 
-It's a script my art teammate required for. I forgot the artist never read codes ... em ... modifying...:flushed:
+It's a script my art teammate required for. I forgot the artist never read codes ... em ... keep modifying...:flushed:
