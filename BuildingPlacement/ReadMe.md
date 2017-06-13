@@ -10,3 +10,5 @@ All the building prefabs need **rigidbody**, **collider** and ***PlaceableBuildi
 
 ![png](https://raw.githubusercontent.com/chenwanwan13/SomeUnityScripts/master/BuildingPlacement/02.png)
 
+Simplely place building on the ground and check the collider between buildings.
+![gif](https://github.com/chenwanwan13/SomeUnityScripts/blob/master/BuildingPlacement/03.gif?raw=true)
