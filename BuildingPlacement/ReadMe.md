@@ -1,7 +1,7 @@
 Building Placement
 ----------
 
-Simplely place building on the ground and check the collider between buildings.
+Simplely place buildings on the ground and check the collider between buildings.
 ![gif](https://github.com/chenwanwan13/SomeUnityScripts/blob/master/BuildingPlacement/03.gif?raw=true)
 
 Usage
