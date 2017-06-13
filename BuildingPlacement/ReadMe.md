@@ -9,7 +9,7 @@ Simplely place buildings on the ground and check the collider between buildings.
 Usage
 ---------
 
-Attach ***BuildingPlacement.cs***  and ***BuildingManager.cs*** to a whatever object.
+Attach ***BuildingPlacement.cs***  and ***BuildingManager.cs*** to a whatever gameobject.
 
 ![png](https://raw.githubusercontent.com/chenwanwan13/SomeUnityScripts/master/BuildingPlacement/01.png)
 
