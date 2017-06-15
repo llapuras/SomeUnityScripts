@@ -15,16 +15,15 @@ public class TransEffect : MonoBehaviour
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public float WaitTimeBeforeFirstLoop = 0f;//第一次循环动画开始之前的等待时间
-    public float FadeInTime = 1.5f;//每张image用来渐入的时间
-    public float FadeOutTime = 1.5f;//每张image用来渐出的时间
+    public float FadeInTime = 0f;//每张image用来渐入的时间
+    public float FadeOutTime = 0f;//每张image用来渐出的时间
     public float StillLifeTime = 2f;//每张image保持静止显示的时间
     public float ImageReloadTime = 3f;//每次播放下一张imgae的间隔时间!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!未实现
-    public int LoopTimes = 2; //循环次数
+    public int   LoopTimes = 2; //循环次数
     //！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-
     private float minAlpha = 0.0f;
-    private float maxAlpha = .9f;
+    private float maxAlpha = 1.0f;
     private float curAlpha = 1.0f;
     private float nextAlpha = 0.0f;
     private int i = 0;
@@ -41,7 +40,7 @@ public class TransEffect : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        
         WaitUntil = StillLifeTime + WaitTimeBeforeFirstLoop;
         InitiializeList(GoList);
 
@@ -53,7 +52,6 @@ public class TransEffect : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        Debug.Log(Time.time);
         Trans();
     }
 
@@ -68,17 +66,16 @@ public class TransEffect : MonoBehaviour
             c = go.curImg.color;
             nextc = go.curImg.color;
 
-            if (Time.time < WaitTimeBeforeFirstLoop)//当前物体保持显形
+            if (Time.time < WaitUntil)//当前物体保持显形
             {
+                Debug.Log("1");
                 StillLife();
-
             }
-            else if (Time.time >= WaitUntil)
+            else
             {
-                if (curAlpha <= minAlpha)//当前物体渐变到不透明时
+                if (nextAlpha >= maxAlpha)//当前物体变现时
                 {
-                    KeepDormantTime();
-
+                    Debug.Log("2");
                     if (i == GoList.Count - 1)
                         i = -1;
                     i++;
@@ -89,25 +86,23 @@ public class TransEffect : MonoBehaviour
                 }
                 else//当前物体逐渐透明，下一物体逐渐现形
                 {
-                    if (looptime <= 1)
+                    Debug.Log("3");
+                    FadeOut();
+                    //Debug.Log(Time.time);
+                    Debug.Log(WaitUntil + ImageReloadTime-Time.time);
+                    if (Time.time > WaitUntil + ImageReloadTime)
                     {
-                        FadeOut();
-                    }
-                    else
-                    {
-                        FadeOut();
+                        Debug.Log("cww");
                         FadeIn();
                     }
                 }
 
                 if (curAlpha >= maxAlpha)//下一物体完全显形
                 {
-
                     if (i == GoList.Count - 1)
                     {
                         looptime--;
                     }
-
                 }
             }
 
@@ -125,7 +120,7 @@ public class TransEffect : MonoBehaviour
         }
 
         // don't know why the looptime decrease doublely = - = ???
-        looptime = LoopTimes * 2;
+        looptime = LoopTimes ;
     }
 
     void LoadGo()
@@ -136,7 +131,6 @@ public class TransEffect : MonoBehaviour
         {
             GoList.Add(new GoInfo(lib.GetChild(i).name.ToString(), lib.transform.GetChild(i).GetComponent<Image>()));
         }
-        Debug.Log(GoList.Count);
     }
 
     private void FadeIn()
@@ -151,7 +145,7 @@ public class TransEffect : MonoBehaviour
     private void FadeOut()
     {
         //curAlpha = 1;
-        curAlpha += Time.deltaTime / FadeOutTime * (-1);//当前物体逐渐消失   
+        curAlpha += Time.deltaTime /FadeOutTime * (-1);//当前物体逐渐消失   
         curAlpha = Mathf.Clamp(curAlpha, minAlpha, maxAlpha);
         c.a = curAlpha;
         go.curImg.color = c;
@@ -193,6 +187,8 @@ public class TransEffect : MonoBehaviour
     {
 
     }
+
+
 }
 
 [System.Serializable]
