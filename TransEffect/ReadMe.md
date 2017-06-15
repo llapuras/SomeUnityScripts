@@ -3,9 +3,9 @@ AlphaTransEffect
 
 Image透明度渐变脚本。
 
-Gradient Transparent scripts for Image.
-
-
+Gradient Transparent scripts for Image.  
+  
+  
 Variables:
 
 
