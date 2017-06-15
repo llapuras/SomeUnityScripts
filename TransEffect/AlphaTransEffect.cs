@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class TransEffect : MonoBehaviour
+public class AlphaTransEffect : MonoBehaviour
 {
 
     public List<GoInfo> GoList;
@@ -13,14 +13,17 @@ public class TransEffect : MonoBehaviour
     private Color c;
     private Color nextc;
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    public float WaitTimeBeforeFirstLoop = 0f;//第一次循环动画开始之前的等待时间
-    public float FadeInTime = 0f;//每张image用来渐入的时间
-    public float FadeOutTime = 0f;//每张image用来渐出的时间
+    /* kyzy_4399希望添加的部分 */
+    //这些是必须的基础功能
+    public float WaitTimeBeforeFirstLoop = 1f;//第一次循环动画开始之前的等待时间
+    public float FadeInTime = 1.5f;//每张image用来渐入的时间
+    public float FadeOutTime = 1.5f;//每张image用来渐出的时间
     public float StillLifeTime = 2f;//每张image保持静止显示的时间
-    public float ImageReloadTime = 3f;//每次播放下一张imgae的间隔时间!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!未实现
-    public int   LoopTimes = 2; //循环次数
-    //！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    public float ImageReloadTime = 3f;//每次播放下一张imgae的间隔时间——这里定义为StillLiFeTime之后开始计算ImageReloadTime
+    //正常情况下ImageReloadTime+FadeInTime应该大于FadeOutTime，否则图片FadeOut不完全
+    public int   LoopTimes = 1;//循环的次数
+    public Transform lib;//图片列表父transform
+    //循环结束以后的指令，是否kill这个物体，或者渐变消失
 
     private float minAlpha = 0.0f;
     private float maxAlpha = 1.0f;
@@ -29,8 +32,6 @@ public class TransEffect : MonoBehaviour
     private int i = 0;
     private int looptime = 0;
     private float WaitUntil = 0f;
-
-    public Transform lib;
 
     public void OnEnable()
     {
@@ -59,7 +60,7 @@ public class TransEffect : MonoBehaviour
     private void Trans()
     {
 
-        if (looptime >= 1)
+        if (LoopTimes >= 1)
         {
             LoopListCheck();
 
@@ -77,8 +78,11 @@ public class TransEffect : MonoBehaviour
                 {
                     Debug.Log("2");
                     if (i == GoList.Count - 1)
+                    {
                         i = -1;
+                    }
                     i++;
+
                     WaitUntil = Time.time + StillLifeTime; //设置新一轮时间限制
                     //设置数据为下一物体做准备
                     curAlpha = 1;
@@ -88,11 +92,10 @@ public class TransEffect : MonoBehaviour
                 {
                     Debug.Log("3");
                     FadeOut();
-                    //Debug.Log(Time.time);
-                    Debug.Log(WaitUntil + ImageReloadTime-Time.time);
+
                     if (Time.time > WaitUntil + ImageReloadTime)
                     {
-                        Debug.Log("cww");
+                        Debug.Log("4");
                         FadeIn();
                     }
                 }
@@ -101,13 +104,17 @@ public class TransEffect : MonoBehaviour
                 {
                     if (i == GoList.Count - 1)
                     {
-                        looptime--;
+                        LoopTimes--;
                     }
                 }
             }
-
         }
-
+        else {
+            go = GoList[GoList.Count-1];
+            FadeOut();
+            if(go.curImg.color.a==0)
+                Kill(lib.gameObject);
+        }
     }
 
     private void InitiializeList(List<GoInfo> li)
@@ -157,9 +164,9 @@ public class TransEffect : MonoBehaviour
         go.curImg.color = c;
     }
 
-    private void Kill()
+    private void Kill(GameObject obj)
     {
-
+        Destroy(obj);
     }
 
     //Loop the img list
@@ -182,13 +189,6 @@ public class TransEffect : MonoBehaviour
         c.a = 0;//设置当前obj保持透明
         go.curImg.color = c;
     }
-
-    private void WaitTime()
-    {
-
-    }
-
-
 }
 
 [System.Serializable]
