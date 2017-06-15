@@ -13,10 +13,15 @@ public class TransEffect : MonoBehaviour
     private Color c;
     private Color nextc;
 
-    public float varifySpeed = 0.5f;
-    public float aTime = 5f;//每个物体保持出现的时间
-    public float dTime = 5f;
-    public int LoopTime = 2; //循环次数
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public float WaitTimeBeforeFirstLoop = 0f;//第一次循环动画开始之前的等待时间
+    public float FadeInTime = 1.5f;//每张image用来渐入的时间
+    public float FadeOutTime = 1.5f;//每张image用来渐出的时间
+    public float StillLifeTime = 2f;//每张image保持静止显示的时间
+    public float ImageReloadTime = 3f;//每次播放下一张imgae的间隔时间!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!未实现
+    public int LoopTimes = 2; //循环次数
+                              //！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
 
     private float minAlpha = 0.0f;
     private float maxAlpha = .9f;
@@ -24,6 +29,7 @@ public class TransEffect : MonoBehaviour
     private float nextAlpha = 0.0f;
     private int i = 0;
     private int looptime = 0;
+    private float WaitUntil = 0f;
 
     public Transform lib;
 
@@ -35,63 +41,136 @@ public class TransEffect : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+
+        WaitUntil = StillLifeTime + WaitTimeBeforeFirstLoop;
         InitiializeList(GoList);
+
+        c = GoList[0].curImg.color;
+        c.a = 1;
+        GoList[0].curImg.color = c;
     }
 
     // Update is called once per frame
     public void Update()
     {
+        Debug.Log(Time.time);
         Trans();
     }
 
-    private void InitiializeList(List<GoInfo> li) {
+
+    private void Trans()
+    {
+
+        if (looptime >= 1)
+        {
+            LoopListCheck();
+
+            c = go.curImg.color;
+            nextc = go.curImg.color;
+
+            if (Time.time < WaitTimeBeforeFirstLoop)//当前物体保持显形
+            {
+                StillLife();
+
+            }
+            else if (Time.time >= WaitUntil)
+            {
+                if (curAlpha <= minAlpha)//当前物体渐变到不透明时
+                {
+                    KeepDormantTime();
+
+                    if (i == GoList.Count - 1)
+                        i = -1;
+                    i++;
+                    WaitUntil = Time.time + StillLifeTime; //设置新一轮时间限制
+                    //设置数据为下一物体做准备
+                    curAlpha = 1;
+                    nextAlpha = 0;
+                }
+                else//当前物体逐渐透明，下一物体逐渐现形
+                {
+                    if (looptime <= 1)
+                    {
+                        FadeOut();
+                    }
+                    else
+                    {
+                        FadeOut();
+                        FadeIn();
+                    }
+                }
+
+                if (curAlpha >= maxAlpha)//下一物体完全显形
+                {
+
+                    if (i == GoList.Count - 1)
+                    {
+                        looptime--;
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
+    private void InitiializeList(List<GoInfo> li)
+    {
         foreach (GoInfo go in li)
         {
             c = go.curImg.color;
             c.a = 0;
             go.curImg.color = c;
         }
+
         // don't know why the looptime decrease doublely = - = ???
-        looptime = LoopTime * 2;
+        looptime = LoopTimes * 2;
     }
 
     void LoadGo()
     {
         //Load the image list
         GoList = new List<GoInfo>();
-        for (int i = 0; i < lib.childCount; i++) {
-            GoList.Add(new GoInfo(lib.GetChild(i).name.ToString(),lib.transform.GetChild(i).GetComponent<Image>()));
+        for (int i = 0; i < lib.childCount; i++)
+        {
+            GoList.Add(new GoInfo(lib.GetChild(i).name.ToString(), lib.transform.GetChild(i).GetComponent<Image>()));
         }
         Debug.Log(GoList.Count);
     }
 
-    private void FadeIn() {
+    private void FadeIn()
+    {
         //nextAlpha = 0;
-        nextAlpha += Time.deltaTime * varifySpeed;//下一个物体逐渐现形
+        nextAlpha += Time.deltaTime / FadeInTime;//下一个物体逐渐现形
         nextAlpha = Mathf.Clamp(nextAlpha, minAlpha, maxAlpha);
         nextc.a = nextAlpha;
         nextgo.curImg.color = nextc;
     }
 
-    private void FadeOut() {
+    private void FadeOut()
+    {
         //curAlpha = 1;
-        curAlpha += Time.deltaTime * varifySpeed * (-1);//当前物体逐渐消失   
+        curAlpha += Time.deltaTime / FadeOutTime * (-1);//当前物体逐渐消失   
         curAlpha = Mathf.Clamp(curAlpha, minAlpha, maxAlpha);
         c.a = curAlpha;
         go.curImg.color = c;
     }
 
-    private void StillLife() {
+    private void StillLife()
+    {
         c.a = 1;
         go.curImg.color = c;
     }
 
-    private void Kill() {
+    private void Kill()
+    {
 
     }
 
     //Loop the img list
-    private void LoopListCheck() {
+    private void LoopListCheck()
+    {
         if (i >= GoList.Count - 1)
         {
             go = GoList[i];
@@ -104,70 +183,17 @@ public class TransEffect : MonoBehaviour
         }
     }
 
-    private void KeepDormantTime() {
+    private void KeepDormantTime()
+    {
         c.a = 0;//设置当前obj保持透明
         go.curImg.color = c;
     }
 
-    private void WaitTime() {
-
-    }
-
-    private void Trans()
+    private void WaitTime()
     {
 
-        if (looptime >= 1)
-        {
-            LoopListCheck();
-
-            c = go.curImg.color;
-            nextc = go.curImg.color;
-
-            if (Time.time < aTime)//当前物体保持显形
-            {
-                StillLife();
-            }
-            else if (Time.time >= aTime)
-            {
-                if (curAlpha <= minAlpha)//当前物体渐变到不透明时
-                {
-                    KeepDormantTime();
-
-                    if (i == GoList.Count - 1)
-                        i = -1;
-                    i++;
-                    aTime = Time.time + dTime; //设置新一轮时间限制
-                    //设置数据为下一物体做准备
-                    curAlpha = 1;
-                    nextAlpha = 0;
-                }
-                else//当前物体逐渐透明，下一物体逐渐现形
-                {
-                    if (looptime <= 1)
-                    {
-                        FadeOut();  
-                    }
-                    else
-                    {
-                        FadeOut();
-                        FadeIn();                        
-                    }
-                }
-
-                if (curAlpha >= maxAlpha)//下一物体完全显形
-                {
-                    
-                    if (i == GoList.Count - 1)
-                    {
-                        looptime--;                       
-                    }
-
-                }
-            }
-
-        }
-
     }
+
 
 }
 
@@ -180,10 +206,10 @@ public class GoInfo
 
     private Color co;
 
-    public GoInfo(string id0,Image img)
+    public GoInfo(string id0, Image img)
     {
         ID = id0;
-        curImg = img;    
+        curImg = img;
     }
 
 }
