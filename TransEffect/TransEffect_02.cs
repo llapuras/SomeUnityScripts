@@ -20,7 +20,7 @@ public class TransEffect : MonoBehaviour
     public float StillLifeTime = 2f;//每张image保持静止显示的时间
     public float ImageReloadTime = 3f;//每次播放下一张imgae的间隔时间!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!未实现
     public int LoopTimes = 2; //循环次数
-                              //！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    //！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
 
     private float minAlpha = 0.0f;
@@ -193,8 +193,6 @@ public class TransEffect : MonoBehaviour
     {
 
     }
-
-
 }
 
 [System.Serializable]
