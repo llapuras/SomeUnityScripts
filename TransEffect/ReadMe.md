@@ -2,9 +2,12 @@ AlphaTransEffect
 --------------
 
 Image透明度渐变脚本。
+
 Gradient Transparent scripts for Image.
 
+
 Variables:
+
 
 WaitTimeBeforeFirstLoop————第一次循环动画开始之前的等待时间
 
