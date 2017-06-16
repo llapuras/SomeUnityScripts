@@ -10,6 +10,8 @@ public class BuildingPlacement : MonoBehaviour {
     private Transform currentBuilding;
     private bool hasPlaced;
 
+    private int times = 0;
+
     public LayerMask buildingsMask;
 
     // Update is called once per frame
@@ -22,9 +24,10 @@ public class BuildingPlacement : MonoBehaviour {
         if (currentBuilding != null && !hasPlaced)
         {
             currentBuilding.position = new Vector3(p.x, 0, p.z);
-
+            AlterDirection();
             if (Input.GetMouseButtonDown(0))
             {
+                
                 if (IsLegalPosition())
                 {
                     hasPlaced = true;
@@ -49,6 +52,23 @@ public class BuildingPlacement : MonoBehaviour {
         }
         
     }
+
+    void AlterDirection() {
+        times++;
+        if (Input.GetKeyDown(KeyCode.A)) {
+            Debug.Log("cww");
+            Quaternion rot = currentBuilding.rotation;
+            currentBuilding.rotation = Quaternion.Euler(rot.x, 90* times, rot.z);
+        }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            Debug.Log("cww");
+            Quaternion rot = currentBuilding.rotation;
+            currentBuilding.rotation = Quaternion.Euler(rot.x, -90 * times, rot.z);
+        }
+    }
+
+
 
     bool IsLegalPosition(){
         if (placeableBuilding.colliders.Count > 0)
