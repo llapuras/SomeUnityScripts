@@ -4,9 +4,10 @@ Building Placement
 u3d ver.5.6.1
 *- **keep on updating~( ×ω× )** -*
 
-Simplely place buildings on the ground and check the colliders between buildings.
+- Simplely place buildings on the ground and check the colliders between buildings.
 
-Key ***A*** and key ***D*** to alter the direction of the placeable building.
+- Key ***A*** and key ***D*** to alter the direction of the placeable building.
+
 ![gif](https://github.com/chenwanwan13/SomeUnityScripts/blob/master/BuildingPlacement/03.gif?raw=true)
 
 Usage
