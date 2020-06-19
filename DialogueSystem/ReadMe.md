@@ -15,3 +15,4 @@ u3d version: 2019.3.4f1
 
 - *DialogueManager.cs*挂在对话框父物体上，父物体下保存对话框预设，按预设填好脚本中内容。
 - *DialogueTrigger.cs*挂在对话框父物体上，填充对话内容。
+- 加个按钮挂上触发方法。
